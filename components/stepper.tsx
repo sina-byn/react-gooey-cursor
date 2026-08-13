@@ -13,7 +13,7 @@ type StepperStepProps = StepperIndicatorProps & {
 
 export function StepperStep({ id, isLast, children, className }: StepperStepProps) {
   return (
-    <section className={cn('relative isolate grid grid-cols-[auto_1fr] gap-x-4 w-full', className)}>
+    <section className={cn('relative isolate grid grid-cols-[auto_1fr] gap-x-4 w-full pt-8 first:pt-0', className)}>
       <StepperIndicator id={id} isLast={isLast} />
       <div className={cn('w-full overflow-hidden', !isLast && 'mb-16')}>{children}</div>
     </section>
