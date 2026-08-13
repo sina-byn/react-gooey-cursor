@@ -1,20 +1,72 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "react-slot",
-  "homepage": "https://react-slot.vercel.app/",
+  "name": "react-gooey-cursor",
+  "homepage": "https://react-gooey-cursor.vercel.app/",
   "items": [
     {
-      "name": "slot",
+      "name": "gooey-cursor",
       "type": "registry:component",
-      "title": "React Slot",
-      "description": "Vue-style slot composition for React",
+      "title": "React Gooey Cursor",
+      "description": "Gooey cursor component for React",
       "files": [
         {
           "type": "registry:component",
-          "path": "components/mock.tsx",
-          "target": "components/ui/mock.tsx"
+          "path": "components/gooey-cursor.tsx",
+          "target": "components/gooey-cursor.tsx"
+        },
+        {
+          "type": "registry:hook",
+          "path": "hooks/use-debounce.ts",
+          "target": "hooks/use-debounce.ts"
         }
-      ]
+      ],
+      "cssVars": {
+        "theme": {
+          "color-cursor-background": "var(--cursor-background)",
+          "animate-blob": "blob 1.5s ease-in forwards"
+        },
+        "light": {
+          "cursor-background": "#ededed"
+        }
+      },
+      "css": {
+        "@layer base": {
+          ".blob": {
+            "scale": "var(--scale)",
+            "translate": "var(--tx) var(--ty)"
+          },
+          ".blob.main, .blob.trail": {
+            "transform": "translate(-50%, -50%)"
+          }
+        },
+        "@keyframes blob": {
+          "0%": {
+            "--scale": "0.2"
+          },
+          "40%": {
+            "--scale": "1"
+          },
+          "100%": {
+            "--tx": "0",
+            "--ty": "0"
+          }
+        },
+        "@property --tx": {
+          "syntax": "'<length>'",
+          "initial-value": "0",
+          "inherits": "false"
+        },
+        "@property --ty": {
+          "syntax": "'<length>'",
+          "initial-value": "0",
+          "inherits": "false"
+        },
+        "@property --scale": {
+          "syntax": "'<number>'",
+          "initial-value": "1",
+          "inherits": "false"
+        }
+      }
     }
   ]
 }
