@@ -13,6 +13,53 @@ import { FileSource } from '@/components/file-source';
 
 import * as PackageInstall from '@/components/package-install';
 
+const CURSOR_CSS = `
+@layer base {
+  .blob {
+    scale: var(--scale);
+    translate: var(--tx) var(--ty);
+    @apply bg-cursor-background aspect-square rounded-full;
+  }
+  .blob.main,
+  .blob.trail {
+    transform: translate(-50%, -50%);
+  }
+  .animate-blob {
+    animation: blob 1.5s linear forwards;
+  }
+  @keyframes blob {
+    0% {
+      --scale: 0.2;
+    }
+    40% {
+      --scale: 1;
+    }
+    100% {
+      --tx: 0;
+      --ty: 0;
+    }
+  }
+}
+
+@property --tx {
+  syntax: '<length>';
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --ty {
+  syntax: '<length>';
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --scale {
+  syntax: '<number>';
+  initial-value: 1;
+  inherits: false;
+}
+`;
+
 export default function HomePage() {
   return (
     <>
@@ -89,6 +136,11 @@ export default function HomePage() {
                       source={{ file: './hooks/use-prefers-reduced-motion.ts' }}
                       preClassName='max-h-200'
                     />
+                  </StepperStep>
+                  <StepperStep id={4} className='*:last:mb-0'>
+                    <p className='prose prose-invert mb-4'>Include the <code>css</code> below:</p>
+
+                    <CodeBlock lang='css' source={CURSOR_CSS.trim()} preClassName='max-h-200' />
                   </StepperStep>
                   <StepperStep id={3} className='*:last:mb-0'>
                     <p className='prose prose-invert mb-4'>
