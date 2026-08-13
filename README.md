@@ -1,36 +1,137 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# React Gooey Cursor
 
-## Getting Started
+![React Gooey Cursor](/assets/demo.gif)
 
-First, run the development server:
+An animated gooey cursor effect for **React** — a trailing blob with a playful blob bloom, all blended together using an SVG filter.
+
+## Features
+
+- **Gooey SVG filter** — `feGaussianBlur` + `feColorMatrix` blend the blobs into a single fluid shape
+- **Trailing blob** — a main blob with a slower, lagging trail eased via `requestAnimationFrame`
+- **Blob bloom** — small particles randomly spawn around the cursor and fade out after 2 seconds
+- **`mix-blend-difference`** — inverts colors underneath for that premium hover feel
+- **Accessibility first** — fully disabled when the user prefers reduced motion
+- **Zero dependencies** — just React, plain CSS custom properties, and an SVG filter
+
+## Demo
+
+Check out the live demo at [react-gooey-cursor.vercel.app](https://react-gooey-cursor.vercel.app/).
+
+## Installation
+
+### CLI
+
+The component is published as a [shadcn/ui](https://ui.shadcn.com) registry item. Install it directly:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx shadcn@latest add https://react-gooey-cursor.vercel.app/r/gooey-cursor.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Manual
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copy the following three files into your project:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| File                                  | Description                      |
+| ------------------------------------- | -------------------------------- |
+| `components/gooey-cursor.tsx`         | The cursor component             |
+| `hooks/use-debounce.ts`               | Debounces the blob-spawn timing  |
+| `hooks/use-prefers-reduced-motion.ts` | Detects `prefers-reduced-motion` |
 
-## Learn More
+## Usage
 
-To learn more about Next.js, take a look at the following resources:
+Add the component to your layout — it's a fixed, full-screen overlay so it works anywhere:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```tsx
+import { GooeyCursor } from './components/gooey-cursor';
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+export function App() {
+  return (
+    <>
+      <main>App</main>
+      <GooeyCursor />
+    </>
+  );
+}
+```
 
-## Deploy on Vercel
+## Required CSS
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The effect relies on a few registered CSS custom properties, keyframes, and a theme color. Add the following to your global stylesheet:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```css
+@layer base {
+  .blob {
+    scale: var(--scale);
+    translate: var(--tx) var(--ty);
+    @apply bg-cursor-background aspect-square rounded-full;
+  }
+  .blob.main,
+  .blob.trail {
+    transform: translate(-50%, -50%);
+  }
+  .animate-blob {
+    animation: blob 1.5s linear forwards;
+  }
+  @keyframes blob {
+    0% {
+      --scale: 0.2;
+    }
+    40% {
+      --scale: 1;
+    }
+    100% {
+      --tx: 0;
+      --ty: 0;
+    }
+  }
+}
+
+@property --tx {
+  syntax: '<length>';
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --ty {
+  syntax: '<length>';
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --scale {
+  syntax: '<number>';
+  initial-value: 1;
+  inherits: false;
+}
+```
+
+Then define the cursor color — the blobs use the `--cursor-background` CSS variable:
+
+```css
+:root {
+  --cursor-background: #ededed;
+}
+```
+
+For Tailwind v4, map the variable as a theme color:
+
+```css
+@theme inline {
+  --color-cursor-background: var(--cursor-background);
+}
+```
+
+## Customization
+
+- **Color** — change `--cursor-background` to any value you like
+- **Blob size** — adjust the `size-16` / `size-12` classes on the main and trail blobs
+- **Bloom density** — tweak the spawn delay (300–900ms) and particle sizes in `gooey-cursor.tsx`
+- **Smoothing** — tune the easing factors (`0.2` for the main blob, `0.08` for the trail) in the rAF loop
+
+## Accessibility
+
+The component respects `prefers-reduced-motion` and renders nothing when the user has reduced motion enabled, so no motion is ever forced on users who don't want it.
+
+## Credits
+
+Developed by [Sina Bayandorian](https://sina-byn.vercel.app/).
