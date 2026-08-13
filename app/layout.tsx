@@ -19,7 +19,9 @@ export const metadata: Metadata = {
   title: 'React Gooey Cursor',
   description:
     'An animated gooey cursor effect for React — a trailing blob with a playful blob bloom, all blended together using an SVG filter.',
-  // verification: { google: '' },
+  verification: {
+    google: '0aVU7hmFQkCiP7NbGmnl6Zelf2_srz7qeoZG927OvN0',
+  },
 };
 
 export default function RootLayout({
