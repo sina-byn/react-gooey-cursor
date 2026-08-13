@@ -127,12 +127,12 @@
 }
 
 :root {
-  --brand: #5500e9;
+  --brand: #10a5e0;
   --cursor-background: #ededed;
 }
 
 .dark {
-  --brand: #5500e9;
+  --brand: #10a5e0;
 }
 /* * customized theme - end */
 
