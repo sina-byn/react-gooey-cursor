@@ -1,6 +1,8 @@
 # React Gooey Cursor
 
-![React Gooey Cursor](/assets/demo.gif)
+<div align="center">
+  <img src="/assets/demo.gif" alt="React Gooey Cursor Demo" style="width:100%; max-width:1200px;">
+</div>
 
 An animated gooey cursor effect for **React** — a trailing blob with a playful blob bloom, all blended together using an SVG filter.
 
