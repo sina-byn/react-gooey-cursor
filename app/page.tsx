@@ -21,17 +21,16 @@ export default function HomePage() {
         <main>
           <div className='relative w-full'>
             <div className='stack w-full min-h-dvh relative'>
-              {process.env.NODE_ENV !== 'development' && <DarkVeil />}
+              {process.env.NODE_ENV !== 'development' && <DarkVeil hueShift={30} />}
 
-              <section className='container relative flex items-center justify-center'>
-                <div>
+              <section className='container relative flex flex-col items-center justify-between'>
+                <div className='grow flex flex-col justify-center pt-38'>
                   <hgroup className='text-center'>
                     <h1 className='text-6xl text-brand font-bold mb-4'>React Gooey Cursor</h1>
-                    <p className='text-xl font-medium text-pretty'>
-                      Bring Vue-style slots to React
-                    </p>
-                    <p className='text-xl font-medium text-pretty'>
-                      Fine-grained control over component composition
+                    <p className='max-w-2xl text-xl font-medium text-pretty mx-auto'>
+                      An animated gooey cursor effect for <span className='text-brand'>React</span>{' '}
+                      — a trailing blob with a playful blob bloom, all blended together using an SVG
+                      filter.
                     </p>
                   </hgroup>
 
@@ -63,7 +62,7 @@ export default function HomePage() {
 
                 <div className='relative rounded-xl overflow-hidden p-0.5'>
                   <PackageInstall.CommandTabs>
-                    <PackageInstall.CommandBlock npxCmd='npx shadcn@latest add @react-slot/slot' />
+                    <PackageInstall.CommandBlock npxCmd='npx shadcn@latest add https://react-gooey-cursor.vercel.app' />
                   </PackageInstall.CommandTabs>
                 </div>
               </section>
@@ -74,7 +73,7 @@ export default function HomePage() {
                 <Stepper>
                   <StepperStep id={1} className='*:last:mb-0'>
                     <p className='prose prose-invert mb-4'>
-                      Copy the content of <code>use-debounce.tsx</code>
+                      Copy the content of <code>use-debounce.ts</code>
                     </p>
 
                     <CodeBlock
@@ -83,6 +82,16 @@ export default function HomePage() {
                     />
                   </StepperStep>
                   <StepperStep id={2} className='*:last:mb-0'>
+                    <p className='prose prose-invert mb-4'>
+                      Copy the content of <code>use-prefers-reduced-motion.ts</code>
+                    </p>
+
+                    <CodeBlock
+                      source={{ file: './hooks/use-prefers-reduced-motion.ts' }}
+                      preClassName='max-h-200'
+                    />
+                  </StepperStep>
+                  <StepperStep id={3} className='*:last:mb-0'>
                     <p className='prose prose-invert mb-4'>
                       Copy the content of <code>gooey-cursor.tsx</code>
                     </p>
@@ -112,184 +121,11 @@ export default function HomePage() {
                 </section>
               </section>
 
-              <section className='container max-w-4xl'>
-                <h3
-                  id='props'
-                  className='text-xl text-center font-semibold mx-auto scroll-mt-30 mb-4'
-                >
-                  Props
-                </h3>
-
-                <section className='space-y-10'>
-                  <ComponentProps
-                    name='Slottable'
-                    props={{
-                      strictDefault: {
-                        type: 'boolean',
-                        required: true,
-                        default: 'false',
-                        description: (
-                          <>
-                            If set to <code className='pl-1.5 mr-0.5'>true</code>
-                            treats the <code className='pl-2.5'>DEFAULT</code> slot <u>strictly</u>.
-                            <a href='#default-slot' className='text-blue-400 ml-1'>
-                              Read more
-                            </a>
-                          </>
-                        ),
-                      },
-                      scope: {
-                        type: 'string',
-                        required: false,
-                        default: 'Slottable',
-                        description: 'Used to show error messages - intended for library authors',
-                      },
-                      children: {
-                        type: 'React.ReactNode',
-                        required: true,
-                        description: 'Children of the Slottable',
-                      },
-                    }}
-                  />
-                  <ComponentProps
-                    name='Template'
-                    props={{
-                      children: {
-                        type: 'React.ReactNode',
-                        required: true,
-                        description: 'Children of the Template',
-                      },
-                    }}
-                  />
-                  <ComponentProps
-                    name='Slot'
-                    props={{
-                      name: {
-                        type: 'string',
-                        required: false,
-                        default: 'DEFAULT',
-                        description: 'name of the slot',
-                      },
-                      children: {
-                        type: 'React.ReactNode',
-                        required: true,
-                        description: 'Children of the Template',
-                      },
-                    }}
-                  />
-                  <ComponentProps
-                    name='SlotPlaceholder'
-                    props={{
-                      name: {
-                        type: 'string',
-                        required: false,
-                        default: 'DEFAULT',
-                        description: 'name of the slot',
-                      },
-                      children: {
-                        type: 'React.ReactNode',
-                        required: false,
-                        default: 'null',
-                        description: 'Default outlet',
-                      },
-                    }}
-                  />
-                </section>
-              </section>
-
-              <section className='container max-w-4xl'>
-                <h3
-                  id='rules'
-                  className='text-xl text-center font-semibold mx-auto scroll-mt-30 mb-4'
-                >
-                  Rules & Behaviour
-                </h3>
-
-                <section className='space-y-10'>
-                  <section id='ssr-compatibility' className='space-y-2'>
-                    <h4 className='title'>SSR Compatibility</h4>
-                    <div className='prose prose-invert'>
-                      <p>
-                        When using this library with Next.js, your components must be client
-                        components. Make sure to mark them with <code>{"'use client'"}</code> at the
-                        top of the file{' '}
-                        <mark className='bg-red-500/30 text-foreground'>
-                          to avoid confusing or misleading errors.
-                        </mark>
-                      </p>
-                    </div>
-                  </section>
-
-                  <section id='default-slot' className='space-y-2'>
-                    <h4 className='title'>Default Slot</h4>
-                    <div className='prose prose-invert'>
-                      <p>
-                        By default, any content that is not wrapped in a <code>{'<Slot />'}</code>{' '}
-                        is treated as part of the <code>{"<Slot name='DEFAULT' />"}</code> slot and
-                        is appended to the end of the rendered children.
-                      </p>
-
-                      <p>
-                        When <code>strictDefault</code> is set to <code>true</code>, the default
-                        slot is ignored unless it is explicitly defined using either{' '}
-                        <code>{'<SlotPlaceholder />'}</code> or{' '}
-                        <code>{"<SlotPlaceholder name='DEFAULT' />"}</code>.
-                      </p>
-
-                      <p>
-                        When <code>strictDefault</code> is set to <code>false</code>, the default
-                        slot behaves more flexibly:
-                      </p>
-
-                      <ul>
-                        <li>
-                          If a default slot placeholder is explicitly defined, the default slot is
-                          rendered at that location.
-                        </li>
-                        <li>
-                          If no default slot placeholder is defined, the default slot content is
-                          appended to the end of the children.
-                        </li>
-                      </ul>
-                    </div>
-                  </section>
-
-                  <section id='template' className='space-y-2'>
-                    <h4 className='title'>Template</h4>
-                    <div className='prose prose-invert'>
-                      <p>
-                        A single <code>{'<Template />'}</code> component is required{' '}
-                        <mark className='bg-blue-500/30 text-foreground'>as a direct child</mark> of{' '}
-                        <code>{'<Slottable />'}</code>
-                      </p>
-
-                      <p>
-                        This component defines the final rendered structure and determines where
-                        each slot is placed using <code>{'<SlotPlaceholder />'}</code> components.
-                      </p>
-
-                      <section>
-                        <p>
-                          If you already have a <code>{'<Template />'}</code> as a direct child of{' '}
-                          <code>{'<Slottable />'}</code>, but still encounter the error{' '}
-                          <code>A single template is required as a direct child of Slottable</code>,
-                          make sure your component is marked as a client component by adding{' '}
-                          <code>
-                            <a href='#ssr-compatibility'>{`'use client'`}</a>
-                          </code>{' '}
-                          at the top of the file.
-                        </p>
-                      </section>
-                    </div>
-                  </section>
-                </section>
-              </section>
-
               <footer className='container max-w-4xl text-sm'>
                 <a
                   target='_blank'
                   className='inline-flex items-center gap-x-2'
-                  href='https://github.com/sina-byn/react-slot'
+                  href='https://github.com/sina-byn/react-gooey-cursor'
                 >
                   <SiGithub className='size-5' />
                   Github
