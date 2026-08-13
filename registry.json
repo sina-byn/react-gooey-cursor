@@ -18,6 +18,11 @@
           "type": "registry:hook",
           "path": "hooks/use-debounce.ts",
           "target": "hooks/use-debounce.ts"
+        },
+        {
+          "type": "registry:hook",
+          "path": "hooks/use-prefers-reduced-motion.ts",
+          "target": "hooks/use-prefers-reduced-motion.ts"
         }
       ],
       "cssVars": {
