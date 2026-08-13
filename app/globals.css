@@ -122,10 +122,13 @@
   --color-brand: var(--brand);
   --color-darken: color-mix(in srgb, var(--base, var(--brand)), black 20%);
   --color-lighten: color-mix(in srgb, var(--base, var(--brand)), white 20%);
+
+  --color-cursor-background: var(--cursor-background);
 }
 
 :root {
   --brand: #5500e9;
+  --cursor-background: #ededed;
 }
 
 .dark {
@@ -180,4 +183,46 @@
       @apply content-none!;
     }
   }
+  .blob {
+    scale: var(--scale);
+    translate: var(--tx) var(--ty);
+    @apply bg-cursor-background aspect-square rounded-full;
+  }
+  .blob.main,
+  .blob.trail {
+    transform: translate(-50%, -50%);
+  }
+  .animate-blob {
+    animation: blob 1.5s linear forwards;
+  }
+  @keyframes blob {
+    0% {
+      --scale: 0.2;
+    }
+    40% {
+      --scale: 1;
+    }
+    100% {
+      --tx: 0;
+      --ty: 0;
+    }
+  }
+}
+
+@property --tx {
+  syntax: '<length>';
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --ty {
+  syntax: '<length>';
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --scale {
+  syntax: '<number>';
+  initial-value: 1;
+  inherits: false;
 }
