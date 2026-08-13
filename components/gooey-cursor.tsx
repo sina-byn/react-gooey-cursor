@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect, useCallback, useEffectEvent } from 'react';
 
 import { useDebounce } from '@/hooks/use-debounce';
+import { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
 
 type Point = {
   x: number;
@@ -26,6 +27,8 @@ const ColorMatrix = [
 ] as const;
 
 export function GooeyCursor() {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   const [smallBlobs, setSmallBlobs] = useState<SmallBlob[]>([]);
 
   const targetRef = useRef<Point>(getCenter());
@@ -78,6 +81,8 @@ export function GooeyCursor() {
   });
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
+
     const controller = new AbortController();
     const signal = controller.signal;
 
@@ -92,9 +97,11 @@ export function GooeyCursor() {
       controller.abort();
       if (spawnTimeoutRef.current) clearTimeout(spawnTimeoutRef.current);
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
+
     let rafId: number;
 
     const animate = () => {
@@ -105,11 +112,11 @@ export function GooeyCursor() {
 
       if (!mainBlob || !trailBlob) return;
 
-      mainPosRef.current.x += (tx - mainPosRef.current.x) * 0.2;
-      mainPosRef.current.y += (ty - mainPosRef.current.y) * 0.2;
+      mainPosRef.current.x += Math.round((tx - mainPosRef.current.x) * 0.2);
+      mainPosRef.current.y += Math.round((ty - mainPosRef.current.y) * 0.2);
 
-      trailPosRef.current.x += (tx - trailPosRef.current.x) * 0.08;
-      trailPosRef.current.y += (ty - trailPosRef.current.y) * 0.08;
+      trailPosRef.current.x += Math.round((tx - trailPosRef.current.x) * 0.08);
+      trailPosRef.current.y += Math.round((ty - trailPosRef.current.y) * 0.08);
 
       mainBlob.style.setProperty('--tx', `${mainPosRef.current.x}px`);
       mainBlob.style.setProperty('--ty', `${mainPosRef.current.y}px`);
@@ -123,7 +130,9 @@ export function GooeyCursor() {
     rafId = requestAnimationFrame(animate);
 
     return () => cancelAnimationFrame(rafId);
-  }, []);
+  }, [prefersReducedMotion]);
+
+  if (prefersReducedMotion) return null;
 
   return (
     <>
@@ -141,7 +150,7 @@ export function GooeyCursor() {
         </filter>
       </svg>
 
-      <div className='fixed inset-0 filter-[url(#gooey)] mix-blend-difference z-10000 pointer-events-none *:rounded-full *:bg-cursor-background'>
+      <div className='fixed inset-0 filter-[url(#gooey)] mix-blend-difference z-10000 pointer-events-none *:rounded-full *:bg-cursor-background motion-reduce:hidden'>
         <div ref={mainBlobRef} className='blob main absolute size-16' />
         <div ref={trailBlobRef} className='blob trail absolute size-12' />
 
@@ -168,7 +177,11 @@ export function GooeyCursor() {
 
 function getCenter(): Point {
   if (typeof window === 'undefined') return { x: 0, y: 0 };
-  return { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+  return {
+    x: Math.round(window.innerWidth / 2),
+    y: Math.round(window.innerHeight / 2),
+  };
 }
 
 function randomPointInAnnulus(cx: number, cy: number, rMin = 60, rMax = 100) {
