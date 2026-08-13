@@ -10,7 +10,6 @@ import { GithubButton } from '@/components/github-button';
 import { Stepper, StepperStep } from '@/components/stepper';
 
 import { FileSource } from '@/components/file-source';
-import { ComponentProps } from '@/components/component-props';
 
 import * as PackageInstall from '@/components/package-install';
 
@@ -62,7 +61,7 @@ export default function HomePage() {
 
                 <div className='relative rounded-xl overflow-hidden p-0.5'>
                   <PackageInstall.CommandTabs>
-                    <PackageInstall.CommandBlock npxCmd='npx shadcn@latest add https://react-gooey-cursor.vercel.app' />
+                    <PackageInstall.CommandBlock npxCmd='npx shadcn@latest add https://react-gooey-cursor.vercel.app/r/gooey-cursor.json' />
                   </PackageInstall.CommandTabs>
                 </div>
               </section>
