@@ -13,8 +13,6 @@ export type NavItem = { label: string; href: string };
 const ITEMS: NavItem[] = [
   { label: 'Install', href: '#installation' },
   { label: 'Usage', href: '#usage' },
-  { label: 'Props', href: '#props' },
-  { label: 'Rules', href: '#rules' },
 ];
 
 export function Header() {
@@ -32,8 +30,8 @@ export function Header() {
             <button type='button' onClick={handleToggle} className='sm:hidden'>
               <MenuIcon />
             </button>
-            <a href='#top' className='font-bold tracking-wide px-2'>
-              React Gooey Cursor
+            <a href='#top' className='text-brand font-bold tracking-wide px-2'>
+              RGC
             </a>
           </div>
 
