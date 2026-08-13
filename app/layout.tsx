@@ -16,11 +16,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'React Slot',
-  description: 'Vue-style slot composition for React components, simple and flexible.',
-  verification: {
-    google: '0aVU7hmFQkCiP7NbGmnl6Zelf2_srz7qeoZG927OvN0',
-  },
+  title: 'React Gooey Cursor',
+  description:
+    'An animated gooey cursor effect for React — a trailing blob with a playful blob bloom, all blended together using an SVG filter.',
+  // verification: { google: '' },
 };
 
 export default function RootLayout({
