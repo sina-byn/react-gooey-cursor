@@ -23,7 +23,7 @@
       "cssVars": {
         "theme": {
           "color-cursor-background": "var(--cursor-background)",
-          "animate-blob": "blob 1.5s ease-in forwards"
+          "animate-blob": "blob var(--animation-dur, 1.5s) ease-in forwards"
         },
         "light": {
           "cursor-background": "#ededed"
